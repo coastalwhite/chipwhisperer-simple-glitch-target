@@ -1,0 +1,10 @@
+.dep
+objdir
+*.eep
+*.elf
+*.hex
+*.lss
+*.map
+*.sym
+
+debug-target
