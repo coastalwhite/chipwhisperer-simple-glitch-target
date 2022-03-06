@@ -1,10 +1,6 @@
-# Simple Serial V2 C Template
+# ChipWhisperer Simple Serial Glitch Target
 
-This a template repository for implementing your own SimpleSerial V2 algorithms
-for execution on ChipWhisperer target boards. It comes with an example _C_ file
-for our target executed binary and with an example _Python 3_ file to do our
-ChipWhisperer traces. The _Python3_ code is currently only suited for the
-STM32F targets, but this could easily be adjusted.
+This is a collection of the files used for the [ChipWhisperer Glitch Tutorial](https://chipwhisperer.readthedocs.io/en/latest/tutorials/courses_fault101_soln_fault%201_1%20-openadc-cwlitearm.html).
 
 ## SimpleSerial Protocol and ChipWhisperer
 
@@ -20,12 +16,12 @@ More info on the ChipWhisperer framework can be found
 > `git submodule update --init`.
 
 One can adjust the `main.c` as one sees fit to implement their own algorithm.
-Setting one of the platforms speicified in the *PLATFORMS.md* in the *makefile*
+Setting one of the platforms specified in the *PLATFORMS.md* in the *makefile*
 will create the output files for that specified platform. By default it is set
 to the `CWLITEARM`.
 
 To run the _Python 3_ capturing code, we first need the newest version of the
-ChipWhiperer python library. Then we can run `python3 capture_trace.py` in the
+ChipWhisperer python library. Then we can run `python3 capture_trace.py` in the
 root directory.
 
 ## Debugging
