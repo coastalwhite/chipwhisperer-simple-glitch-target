@@ -40,8 +40,8 @@ SS_VER=SS_VER_2_0
 PLATFORM=CWLITEARM
 
 # -----------------------------------------------------------------------------
-debugging:
-	gcc -o debug-target debug-source.c main.c
+# debugging:
+# 	gcc -o debug-target debug-source.c main.c
 
 #Add simpleserial project to build
 include simpleserial/Makefile.simpleserial

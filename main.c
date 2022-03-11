@@ -18,28 +18,21 @@
 /// differences between different scmd values.
 uint8_t handle(uint8_t cmd, uint8_t scmd, uint8_t len, uint8_t *buf)
 {
-  volatile uint8_t result = 0;
+    volatile uint16_t i, j;
+    volatile uint32_t cnt;
 
-  // Start measurement.
-  trigger_high();
+    cnt = 0;
 
-  // Cause more clock cycles to happen the higher the scmd is
-  // We need 'volatile' here because we don't want the compiler to optimize the
-  // loop out.
-  for (volatile uint8_t i = 0; i < 255; i++) {
-    if (i == scmd) {
-        result = scmd * scmd;
+    trigger_high();
+    for(i=0; i<50; i++){
+        for(j=0; j<50; j++){
+            cnt++;
+        }
     }
-  }
+    trigger_low();
 
-  // Stop measurement.
-  trigger_low();
-
-  // For now we can just return the result back to the user.
-  uint8_t buff[1] = { result };
-  simpleserial_put('r', 1, buff);
-
-  return 0;
+    simpleserial_put('r', 4, (uint8_t*)&cnt);
+    return (cnt != 2500);
 }
 
 int main(void) {

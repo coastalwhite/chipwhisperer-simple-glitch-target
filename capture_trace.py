@@ -28,37 +28,44 @@ aes_hex_path = os.path.join(aes_firmware_dir, r"simpleserial-target-CWLITEARM.he
 cw.program_target(scope, program, aes_hex_path)
 ########################################
 
-# Capture a trace of our binary
+# Define a reboot function
 ########################################
-# Define some dummy data
-data = bytearray([0x42] * 16)
+def reboot_flush():
+    scope.io.nrst = False
+    time.sleep(0.05)
+    scope.io.nrst = "high_z"
+    time.sleep(0.05)
+    #Flush garbage too
+    target.flush()
+########################################
 
-# Arm the capture board
-scope.arm()
+# Start glitching
+########################################
+target.send_cmd('g', 0x00, bytearray([0xAB]))
 
-# Flush the UART buffer
-target.flush()
+val = target.simpleserial_read_witherrors('r', 4, glitch_timeout=10)#For loop check
+valid = val['valid']
+if valid:
+    response = val['payload']
+    raw_serial = val['full_response']
+    error_code = val['rv']
 
-# Send a new command to trigger our code.
-# Here we use scmd = 128
-target.send_cmd('p', 0x80, data)
-
-# Do our wave trace capture
-# and fetch that wave trace
-ret = scope.capture()
-trace = scope.get_last_trace()
+print(val)
 ########################################
 
 # Return the data.
 ########################################
 # Print the returned data
-returned_data = target.read_cmd('r')
-print(returned_data)
-ack = target.read_cmd('e')
-
-import matplotlib.pyplot as plt
-
-# Plot the trace
-plt.plot(trace)
-plt.show()
+# returned_data = target.read_cmd('r')
+# print(returned_data)
+# ack = target.read_cmd('e')
+#
+# import matplotlib.pyplot as plt
+#
+# # Plot the trace
+# plt.plot(trace)
+# plt.show()
 ########################################
+
+scope.dis()
+target.dis()
