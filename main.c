@@ -46,7 +46,7 @@ int main(void) {
   simpleserial_init();
 
   // Insert your handlers here.
-  simpleserial_addcmd('p', 16, handle);
+  simpleserial_addcmd('p', 0, handle);
 
   // What for the capture board to send commands and handle them.
   while (1)
