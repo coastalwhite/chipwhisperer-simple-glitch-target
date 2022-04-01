@@ -1,5 +1,6 @@
 import numpy as np
 import chipwhisperer as cw
+from tqdm import trange
 import time
 
 # Setup our capture and target boards.
@@ -13,7 +14,6 @@ scope.glitch.output = "clock_xor" # glitch_out = clk ^ glitch
 scope.glitch.trigger_src = "ext_single" # glitch only after scope.arm() called
 
 scope.io.hs2 = "glitch" # output glitch_out on the clock line
-print(scope.glitch)
 
 target = cw.target(scope, cw.targets.SimpleSerial2, flush_on_err=False)
 ########################################
@@ -55,6 +55,13 @@ def reboot_flush():
 width_values =  np.arange(4.5, 5.5, 0.001) # 4.5 - 5.5 with steps of 0.001
 offset_values = np.arange(7.5, 8.5, 0.01) # 7.5 - 8.5 with steps of 0.01
 
+# Other parameters. These might need to be refined.
+# First put them to broadranges and then progressively refine
+scope.glitch.ext_offset = 8 # started at 2
+scope.glitch.repeat = 1 # started at 100
+
+rounds_per_point = 1 # Perform one measurement per tuple
+
 glitch_values = []
 
 # Generate a tuple value for all possible combinations
@@ -66,16 +73,9 @@ for wvalue in width_values:
 
 # Parameters
 ########################################
-# Other parameters. These need to be refined.
-# First put them to broadranges and then progressively refine
-scope.glitch.ext_offset = 8 # started at 2
-scope.glitch.repeat = 1 # started at 100
-
 expected_sum = 2500
 
 scope.adc.timeout = 0.1
-
-rounds_per_point = 1 # Perform one measurement per tuple
 ########################################
 
 # Perform attacks
@@ -86,7 +86,9 @@ glitch_outputs = []
 
 # Reset the device
 reboot_flush()
-for glitch_setting in glitch_values:
+for i in trange(len(glitch_values)):
+    glitch_setting = glitch_values[i]
+
     scope.glitch.width = glitch_setting[0]
     scope.glitch.offset = glitch_setting[1]
 
