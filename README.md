@@ -2,6 +2,14 @@
 
 This is a collection of the files used for the [ChipWhisperer Glitch Tutorial](https://chipwhisperer.readthedocs.io/en/latest/tutorials/courses_fault101_soln_fault%201_1%20-openadc-cwlitearm.html).
 
+## Effects
+
+Below is a image showing the results within successful clock glitches on a
+particularly interesting range. Notice that only the successful attacks are
+shown.
+
+![Clock Glitch Effects](./ClockGlitchingEffects.png)
+
 ## Requirements
 
 - [ARM GNU Toolchain](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm). Can be installed using your favourite package manager (often under the name `arm-none-eabi-gcc`).
